@@ -29,6 +29,9 @@ class CreateUser extends Register
             $this->remove('password');
             $this->remove('passwordVerify');
         }
+        
+        $this->remove('captcha');
+        
 
         foreach ($this->getCreateOptions()->getCreateFormElements() as $name => $element) {
             // avoid adding fields twice (e.g. email)
@@ -45,7 +48,7 @@ class CreateUser extends Register
             ));
         }
 
-        $this->get('submit')->setAttribute('label', 'Create');
+        $this->get('submit')->setOption('label', 'Create');
     }
 
     public function setCreateOptions(UserCreateOptionsInterface $createOptionsOptions)
