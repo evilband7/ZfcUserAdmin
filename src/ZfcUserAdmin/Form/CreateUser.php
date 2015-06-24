@@ -49,6 +49,7 @@ class CreateUser extends Register
         }
 
         $this->get('submit')->setOption('label', 'Create');
+        $this->get('submit')->setAttribute('value', 'Create');
     }
 
     public function setCreateOptions(UserCreateOptionsInterface $createOptionsOptions)
