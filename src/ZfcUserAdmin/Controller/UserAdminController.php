@@ -8,6 +8,8 @@ use Zend\Stdlib\Hydrator\ClassMethods;
 use ZfcUser\Mapper\UserInterface;
 use ZfcUser\Options\ModuleOptions as ZfcUserModuleOptions;
 use ZfcUserAdmin\Options\ModuleOptions;
+use Zend\EventManager\EventManager;
+use ZfcUserAdmin\Event\ZfcUserAdminEvent;
 
 class UserAdminController extends AbstractActionController
 {
@@ -30,9 +32,14 @@ class UserAdminController extends AbstractActionController
 
         $paginator->setItemCountPerPage(100);
         $paginator->setCurrentPageNumber($this->getEvent()->getRouteMatch()->getParam('p'));
+        
+        $eventManager = new EventManager();
+        $eventManager->setIdentifiers(ZfcUserAdminEvent::$IDENTIFIERS);
+        
         return array(
             'users' => $paginator,
-            'userlistElements' => $this->getOptions()->getUserListElements()
+            'userlistElements' => $this->getOptions()->getUserListElements(),
+            'events' => $eventManager
         );
     }
 

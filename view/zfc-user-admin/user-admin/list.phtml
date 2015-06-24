@@ -1,5 +1,9 @@
 <?php
+use Zend\EventManager\EventManagerInterface;
+use ZfcUserAdmin\Event\ZfcUserAdminEvent;
+
 $getters = array();
+
 foreach ($this->userlistElements as $element) {
     $parts = explode('_', $element);
     array_walk($parts, function (&$val) {
@@ -7,6 +11,9 @@ foreach ($this->userlistElements as $element) {
     });
     $getters[$element] = 'get' . implode('', $parts);
 }
+
+/* @var $events EventManagerInterface */
+$events = $this->events;
 ?>
 
 <h1><?php echo $this->translate('Users') ?></h1>
@@ -48,6 +55,13 @@ foreach ($this->userlistElements as $element) {
                    onclick="return confirm('<?php echo $this->translate('Really delete user?') ?>')">
                     <?php echo $this->translate('Delete') ?>
                 </a>
+                <?php $stacks = $events->trigger(ZfcUserAdminEvent::$EVENT_RENDER, null, array());?>
+                <?php foreach ($stacks as $item): ?>
+                    <?php if($item): ?>
+                        |
+                        <?php echo $item?>
+                    <?php endif;?>
+                <?php endforeach;?>
             </td>
         </tr>
     <?php endforeach; ?>
