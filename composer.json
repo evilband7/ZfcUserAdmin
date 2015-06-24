@@ -1,5 +1,5 @@
 {
-  "name" : "danielss89/zfc-user-admin",
+  "name" : "evilband7/zfc-user-admin",
   "description" : "An administration interface for ZfcUser.",
   "version" : "1.0.1",
   "require" : {
