@@ -100,6 +100,7 @@ class UserAdminController extends AbstractActionController implements EventManag
             'addUrl' => $this->url()->fromRoute('zfcadmin/zfcuseradmin/create')
         ));
         
+        return $grid->getResponse();
         
     }
     

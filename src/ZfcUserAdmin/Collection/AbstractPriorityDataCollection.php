@@ -57,7 +57,10 @@ abstract class AbstractPriorityDataCollection implements  \IteratorAggregate
         foreach ($this->datas as $dataInfo){
             $priority = $dataInfo['priority'];
             $wrappedData = $dataInfo['wrappedData'];
-            $priorityArray[$priority] = $priorityArray[$priority] ?: array();
+            
+            if( !array_key_exists($priority, $priorityArray)){
+                $priorityArray[$priority] = array();
+            }
             $priorityArray[$priority][] = $wrappedData;
         }
         
