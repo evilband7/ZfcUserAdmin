@@ -10,38 +10,105 @@ use ZfcUser\Options\ModuleOptions as ZfcUserModuleOptions;
 use ZfcUserAdmin\Options\ModuleOptions;
 use Zend\EventManager\EventManager;
 use ZfcUserAdmin\Event\ZfcUserAdminEvent;
+use Doctrine\ORM\EntityManager;
+use ZfcDatagrid\Column;
+use ZfcUserAdmin\Collection\ButtonCollection;
+use ZfcUserAdmin\Collection\ColumnCollection;
+use Zend\EventManager\EventManagerAwareInterface;
+use Zend\EventManager\EventManagerAwareTrait;
+use Zend\EventManager\EventManagerInterface;
+use ZfcUserAdmin\Event\ListEvent;
 
-class UserAdminController extends AbstractActionController
+class UserAdminController extends AbstractActionController implements EventManagerAwareInterface
 {
+    use  EventManagerAwareTrait;
+    
+    private $eventIdentifier = array('ZfcUserAdmin', ZfcUserAdminEvent::class);
+    
     protected $options, $userMapper;
     protected $zfcUserOptions;
     /**
      * @var \ZfcUserAdmin\Service\User
      */
     protected $adminUserService;
+    
+    /**
+     * @return EventManagerInterface
+     */
+    public function createPrivateEventManager($eventClazz)
+    {
+        $events = new EventManager();
+        $events->setIdentifiers(array('ZfcUserAdmin',$eventClazz));
+        $events->setEventClass($eventClazz);
+        return $events;
+    }
 
+    
     public function listAction()
     {
-        $userMapper = $this->getUserMapper();
-        $users = $userMapper->findAll();
-        if (is_array($users)) {
-            $paginator = new Paginator\Paginator(new Paginator\Adapter\ArrayAdapter($users));
-        } else {
-            $paginator = $users;
+        /* @var $grid \ZfcDatagrid\Datagrid */
+        /* @var $em EntityManager */
+        
+        $serviceLocator = $this->getServiceLocator();
+        $config = $serviceLocator->get('config');
+        $entityClass = $config['zfcuser']['userEntityClass'];
+        $grid = $serviceLocator->get('ZfcDatagrid\Datagrid');
+        $em = $serviceLocator->get(EntityManager::class);
+        
+        $dqlUserAlias = 'e';
+        $qb = $em->getRepository($entityClass)->createQueryBuilder($dqlUserAlias);
+        
+        $grid->setTitle('Users');
+        $columnCollection = new ColumnCollection();
+        $buttonCollection = new ButtonCollection();
+        
+        $colId = new Column\Select('id', 'e');
+        $colId->setLabel('User ID');
+        $columnCollection->put(ColumnCollection::$ID_COLUMN_ID, $colId);
+         
+        $colUsername = new Column\Select('username', 'e');
+        $colUsername->setLabel('Username');
+        $columnCollection->put(ColumnCollection::$ID_COLUMN_USERNAME, $colUsername);
+        
+        $colEmail = new Column\Select('email', 'e');
+        $colEmail->setLabel('Email');
+        $columnCollection->put(ColumnCollection::$ID_COLUMN_EMAIL, $colEmail);
+        
+        $actions = new Column\Action();
+        $actions->setLabel('#Action');
+         
+        $editBtn = new Column\Action\Button();
+        $editBtn->setLabel('Edit');
+        $editBtn->setAttribute('class', 'btn btn-primary btn-sm');
+        $editBtn->setLink($this->url()->fromRoute('zfcadmin/zfcuseradmin/create', array( 'userId' => $colId->getColumnValuePlaceholder($colId))));
+        $buttonCollection->put(ButtonCollection::$ID_EDIT_BTN, $editBtn);
+         
+        $deleteBtn = new Column\Action\Button();
+        $deleteBtn->setLabel('Delete');
+        $deleteBtn->setAttribute('class', 'btn btn-danger btn-sm delete-btn');
+        $deleteBtn->setLink($this->url()->fromRoute('zfcadmin/zfcuseradmin/remove', array( 'userId' => $colId->getColumnValuePlaceholder($colId))));
+        $buttonCollection->put(ButtonCollection::$ID_DELETE_BTN, $deleteBtn);
+        
+        $events = $this->createPrivateEventManager(ListEvent::class);
+        $events->trigger(ListEvent::$EVENT_NAME, $this, array('queryBuilder' => $qb, 'buttonCollection'=>$buttonCollection, 'columnCollection'=>$columnCollection ));
+        
+        foreach ($buttonCollection as $btn){
+            $actions->addAction($btn);
         }
-
-        $paginator->setItemCountPerPage(100);
-        $paginator->setCurrentPageNumber($this->getEvent()->getRouteMatch()->getParam('p'));
+        foreach ($columnCollection as $column){
+            $grid->addColumn($column);
+        }
+        $grid->addColumn($actions);
+        $grid->setDataSource($qb);
+         
+        // Finalizing
+        $grid->setToolbarTemplateVariables(array(
+            'addUrl' => $this->url()->fromRoute('zfcadmin/zfcuseradmin/create')
+        ));
         
-        $eventManager = new EventManager();
-        $eventManager->setIdentifiers(ZfcUserAdminEvent::$IDENTIFIERS);
         
-        return array(
-            'users' => $paginator,
-            'userlistElements' => $this->getOptions()->getUserListElements(),
-            'events' => $eventManager
-        );
     }
+    
 
     public function createAction()
     {
