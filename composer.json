@@ -1,7 +1,7 @@
 {
   "name" : "evilband7/zfc-user-admin",
   "description" : "An administration interface for ZfcUser.",
-  "version" : "1.0.4",
+  "version" : "1.0.5",
   "require" : {
     "php" : ">=5.3.3",
     "zf-commons/zfc-user" : ">=0.1.1",

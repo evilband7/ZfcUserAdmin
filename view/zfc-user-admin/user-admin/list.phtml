@@ -14,6 +14,7 @@ foreach ($this->userlistElements as $element) {
 
 /* @var $events EventManagerInterface */
 $events = $this->events;
+$event = new ZfcUserAdminEvent(ZfcUserAdminEvent::$EVENT_RENDER_BUTTON, null, array('phpRenderer'=>$this));
 ?>
 
 <h1><?php echo $this->translate('Users') ?></h1>
@@ -55,7 +56,10 @@ $events = $this->events;
                    onclick="return confirm('<?php echo $this->translate('Really delete user?') ?>')">
                     <?php echo $this->translate('Delete') ?>
                 </a>
-                <?php $stacks = $events->trigger(ZfcUserAdminEvent::$EVENT_RENDER, null, array('user'=>$user));?>
+                <?php 
+                    $event->setParam('user', $user);
+                    $stacks = $events->trigger($event);
+                ?>
                 <?php foreach ($stacks as $item): ?>
                     <?php if($item): ?>
                         |
