@@ -17,7 +17,7 @@ class ButtonCollection extends AbstractPriorityDataCollection
         return parent::getData($id);
     }
     
-    public function put($id, Button $button, $priority = 1){
+    public function put($id, $button, $priority = 1){
         parent::put($id, $button, $priority);  
         return $this;
     }

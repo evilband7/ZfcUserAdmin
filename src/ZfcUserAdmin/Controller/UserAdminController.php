@@ -74,13 +74,13 @@ class UserAdminController extends AbstractActionController implements EventManag
         $editBtn = new Column\Action\Button();
         $editBtn->setLabel('Edit');
         $editBtn->setAttribute('class', 'btn btn-primary btn-sm');
-        $editBtn->setLink($this->url()->fromRoute('zfcadmin/zfcuseradmin/create', array( 'userId' => $colId->getColumnValuePlaceholder($colId))));
+        $editBtn->setLink($this->url()->fromRoute('zfcadmin/zfcuseradmin/create', array( 'userId' => $editBtn->getColumnValuePlaceholder($colId))));
         $buttonCollection->put(ButtonCollection::$ID_EDIT_BTN, $editBtn);
          
         $deleteBtn = new Column\Action\Button();
         $deleteBtn->setLabel('Delete');
         $deleteBtn->setAttribute('class', 'btn btn-danger btn-sm delete-btn');
-        $deleteBtn->setLink($this->url()->fromRoute('zfcadmin/zfcuseradmin/remove', array( 'userId' => $colId->getColumnValuePlaceholder($colId))));
+        $deleteBtn->setLink($this->url()->fromRoute('zfcadmin/zfcuseradmin/remove', array( 'userId' => $deleteBtn->getColumnValuePlaceholder($colId))));
         $buttonCollection->put(ButtonCollection::$ID_DELETE_BTN, $deleteBtn);
         
         $events = $this->createPrivateEventManager(ListEvent::class);

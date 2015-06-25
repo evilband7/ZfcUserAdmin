@@ -19,7 +19,7 @@ class ColumnCollection extends AbstractPriorityDataCollection
         return parent::getData($id);
     }
     
-    public function put($id, AbstractColumn $button, $priority = 1){
+    public function put($id, $button, $priority = 1){
         parent::put($id, $button, $priority);  
         return $this;
     }
