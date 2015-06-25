@@ -3,27 +3,21 @@
 namespace ZfcUserAdmin\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
-use Zend\Paginator;
 use Zend\Stdlib\Hydrator\ClassMethods;
 use ZfcUser\Mapper\UserInterface;
 use ZfcUser\Options\ModuleOptions as ZfcUserModuleOptions;
 use ZfcUserAdmin\Options\ModuleOptions;
 use Zend\EventManager\EventManager;
-use ZfcUserAdmin\Event\ZfcUserAdminEvent;
 use Doctrine\ORM\EntityManager;
 use ZfcDatagrid\Column;
 use ZfcUserAdmin\Collection\ButtonCollection;
 use ZfcUserAdmin\Collection\ColumnCollection;
 use Zend\EventManager\EventManagerAwareInterface;
-use Zend\EventManager\EventManagerAwareTrait;
 use Zend\EventManager\EventManagerInterface;
 use ZfcUserAdmin\Event\ListEvent;
 
 class UserAdminController extends AbstractActionController implements EventManagerAwareInterface
 {
-    use  EventManagerAwareTrait;
-    
-    private $eventIdentifier = array('ZfcUserAdmin', ZfcUserAdminEvent::class);
     
     protected $options, $userMapper;
     protected $zfcUserOptions;
@@ -35,7 +29,7 @@ class UserAdminController extends AbstractActionController implements EventManag
     /**
      * @return EventManagerInterface
      */
-    public function createPrivateEventManager($eventClazz)
+    private function createPrivateEventManager($eventClazz)
     {
         $events = new EventManager();
         $events->setIdentifiers(array('ZfcUserAdmin',$eventClazz));
