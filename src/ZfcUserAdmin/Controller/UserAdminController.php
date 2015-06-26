@@ -49,8 +49,8 @@ class UserAdminController extends AbstractActionController implements EventManag
         $grid = $serviceLocator->get('ZfcDatagrid\Datagrid');
         $em = $serviceLocator->get(EntityManager::class);
         
-        $dqlUserAlias = 'e';
-        $qb = $em->getRepository($entityClass)->createQueryBuilder($dqlUserAlias);
+        $userAliasDql = 'u';
+        $qb = $em->getRepository($entityClass)->createQueryBuilder($userAliasDql);
         
         $grid->setTitle('Users');
         $columnCollection = new ColumnCollection();
@@ -84,7 +84,13 @@ class UserAdminController extends AbstractActionController implements EventManag
         $buttonCollection->put(ButtonCollection::$ID_DELETE_BTN, $deleteBtn);
         
         $events = $this->createPrivateEventManager(ListEvent::class);
-        $events->trigger(ListEvent::$EVENT_NAME, $this, array('queryBuilder' => $qb, 'buttonCollection'=>$buttonCollection, 'columnCollection'=>$columnCollection ));
+        $events->trigger(ListEvent::$EVENT_NAME, $this, 
+            array(
+                'queryBuilder' => $qb, 
+                'buttonCollection'=>$buttonCollection, 
+                'columnCollection'=>$columnCollection, 
+                'userAliasDql'=>$userAliasDql 
+            ));
         
         foreach ($buttonCollection as $btn){
             $actions->addAction($btn);

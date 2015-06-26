@@ -11,6 +11,10 @@ class ListEvent extends  Event
     static $IDENTIFIERS = array(ListEvent::class);
     static $EVENT_NAME = 'ZfcUserAdmin.userList';
     
+    public function getUserAliasDql(){
+        return $this->getParam('userAliasDql');
+    }
+    
     /**
      * 
      * @return ColumnCollection
