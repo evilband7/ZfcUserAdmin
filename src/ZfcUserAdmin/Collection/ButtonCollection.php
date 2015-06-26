@@ -1,8 +1,9 @@
 <?php
 namespace ZfcUserAdmin\Collection;
 use ZfcDatagrid\Column\Action\Button;
+use PhpCommonUtil\Collection\PriorityFifoDataCollection;
 
-class ButtonCollection extends AbstractPriorityDataCollection
+class ButtonCollection extends PriorityFifoDataCollection
 {
     static $ID_EDIT_BTN = 'editBtn';
     static $ID_DELETE_BTN = 'deleteBtn';

@@ -2,8 +2,9 @@
 namespace ZfcUserAdmin\Collection;
 
 use ZfcDatagrid\Column\AbstractColumn;
+use PhpCommonUtil\Collection\PriorityFifoDataCollection;
 
-class ColumnCollection extends AbstractPriorityDataCollection
+class ColumnCollection extends PriorityFifoDataCollection
 {
     static $ID_COLUMN_ID = 'idColumn';
     static $ID_COLUMN_USERNAME = 'usernameColumn';
