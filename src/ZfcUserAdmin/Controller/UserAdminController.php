@@ -92,10 +92,10 @@ class UserAdminController extends AbstractActionController implements EventManag
                 'userAliasDql'=>$userAliasDql 
             ));
         
-        foreach ($buttonCollection as $btn){
+        foreach ($buttonCollection->getIterator() as $btn){
             $actions->addAction($btn);
         }
-        foreach ($columnCollection as $column){
+        foreach ($columnCollection->getIterator() as $column){
             $grid->addColumn($column);
         }
         $grid->addColumn($actions);
