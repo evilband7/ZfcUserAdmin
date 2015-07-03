@@ -15,6 +15,7 @@ use ZfcUserAdmin\Collection\ColumnCollection;
 use Zend\EventManager\EventManagerAwareInterface;
 use Zend\EventManager\EventManagerInterface;
 use ZfcUserAdmin\Event\ListEvent;
+use Zend\Mvc\MvcEvent;
 
 class UserAdminController extends AbstractActionController implements EventManagerAwareInterface
 {
@@ -25,6 +26,11 @@ class UserAdminController extends AbstractActionController implements EventManag
      * @var \ZfcUserAdmin\Service\User
      */
     protected $adminUserService;
+    
+    public function onDispatch(MvcEvent $e){
+        $this->doctype()->disable();
+        return parent::onDispatch($e);
+    }
     
     /**
      * @return EventManagerInterface

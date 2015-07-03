@@ -1,14 +1,15 @@
 {
   "name" : "evilband7/zfc-user-admin",
   "description" : "An administration interface for ZfcUser.",
-  "version" : "1.0.13",
+  "version" : "1.0.14",
   "require" : {
     "php" : ">=5.3.3",
     "zf-commons/zfc-user" : ">=0.1.1",
     "zf-commons/zfc-admin" : ">=0.1.1",
     "thadafinser/zfc-datagrid" : "dev-master",
     "doctrine/orm" : "*",
-    "evilband7/php-common-util" : "*"
+    "evilband7/php-common-util" : "*",
+    "evilband7/zf2-xhtml" : "*"
   },
   "repositories" : [ {
     "type" : "composer",
