@@ -28,7 +28,6 @@ class UserAdminController extends AbstractActionController implements EventManag
     protected $adminUserService;
     
     public function onDispatch(MvcEvent $e){
-        $this->doctype()->disable();
         return parent::onDispatch($e);
     }
     
