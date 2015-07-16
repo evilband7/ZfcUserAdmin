@@ -63,6 +63,7 @@ class UserAdminController extends AbstractActionController implements EventManag
         
         $colId = new Column\Select('id', $userAliasDql);
         $colId->setLabel('User ID');
+        $colId->setWidth(1);
         $columnCollection->put(ColumnCollection::$ID_COLUMN_ID, $colId);
          
         $colUsername = new Column\Select('username', $userAliasDql);
