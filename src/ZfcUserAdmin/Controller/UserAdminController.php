@@ -77,7 +77,7 @@ class UserAdminController extends AbstractActionController implements EventManag
         $actions = new Column\Action();
         $actions->setLabel('#Action');
         $actions->setWidth(3);
-        $columnCollection->put(ColumnCollection::$ID_COLUMN_ACTIONS, $actions);
+        $columnCollection->put(ColumnCollection::$ID_COLUMN_ACTIONS, $actions,-1000);
          
         $editBtn = new Column\Action\Button();
         $editBtn->setLabel('Edit');
@@ -106,7 +106,7 @@ class UserAdminController extends AbstractActionController implements EventManag
         foreach ($columnCollection->getIterator() as $column){
             $grid->addColumn($column);
         }
-        $grid->addColumn($actions);
+        //$grid->addColumn($actions);
         $grid->setDataSource($qb);
          
         // Finalizing
