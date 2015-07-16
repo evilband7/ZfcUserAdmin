@@ -15,7 +15,7 @@ class ButtonCollection extends PriorityFifoDataCollection
      * @return Button|NULL
      */
     public function get($id){
-        return parent::getData($id);
+        return parent::get($id);
     }
     
     public function put($id, $button, $priority = 1){
