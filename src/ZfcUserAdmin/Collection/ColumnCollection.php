@@ -8,7 +8,8 @@ class ColumnCollection extends PriorityFifoDataCollection
 {
     static $ID_COLUMN_ID = 'idColumn';
     static $ID_COLUMN_USERNAME = 'usernameColumn';
-    static $ID_COLUMN_EMAIL = 'deleteBtn';
+    static $ID_COLUMN_EMAIL = 'emailColumn';
+    static $ID_COLUMN_ACTIONS = 'actionsColumn';
     
     private $buttons = array();
     
